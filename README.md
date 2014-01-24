@@ -28,12 +28,16 @@ optional arguments:
 % ./yamlcheck samples/sample_correct.yml
 
 % ./yamlcheck samples/sample_incorrect_*.yml
-Error at: samples/sample_incorrect_1.yml:3 column 1
-  Context: while parsing a flow node
-  Problem: expected the node content, but found '<stream end>'
+Error in samples/sample_incorrect_1.yml:3
+  Context: line 3, column 1
+    while parsing a flow node
+  Problem: line 3, column 1
+    expected the node content, but found '<stream end>'
 
-Error at: samples/sample_incorrect_2.yml:3 column 1
-  Context: while parsing a flow node
-  Problem: expected the node content, but found '<stream end>'
+Error in samples/sample_incorrect_2.yml:3
+  Context: line 3, column 1
+    while parsing a flow node
+  Problem: line 3, column 1
+    expected the node content, but found '<stream end>'
 ```
 

@@ -48,20 +48,31 @@ def main():
 def describe(file_name, yaml_error):
     result = []
 
-    if hasattr(yaml_error, 'problem_mark'):
-        mark = yaml_error.problem_mark
-        result.append('Error at: %s:%s column %s' % (file_name, mark.line+1, mark.column+1))
+    problem = getattr(yaml_error, 'problem', None)
+    context = getattr(yaml_error, 'context', None)
+    problem_mark = getattr(yaml_error, 'problem_mark', None)
+    context_mark = getattr(yaml_error, 'context_mark', None)
+
+    if problem_mark:
+        result.append('Error in %s:%s' % (file_name, problem_mark.line+1))
     else:
-        result.append('Error in: %s' % file_name)
+        result.append('Error in %s:' % (file_name))
 
-    if hasattr(yaml_error, 'context'):
-        if hasattr(yaml_error, 'context_mark'):
-            result.append('  Context: %s' % yaml_error.context)
+    if context:
+        if context_mark:
+            result.append('  Context: line %s, column %s' %
+                (context_mark.line+1, context_mark.column+1))
         else:
-            result.append('  Context: %s' % yaml_error.context)
+            result.append('  Context:')
+        result.append('    ' + context)
 
-    if hasattr(yaml_error, 'problem'):
-        result.append('  Problem: %s' % yaml_error.problem)
+    if problem:
+        if problem_mark:
+            result.append('  Problem: line %s, column %s' %
+                (problem_mark.line+1, problem_mark.column+1))
+        else:
+            result.append('  Problem:')
+        result.append('    ' + problem)
 
     return '\n'.join(result)
 
