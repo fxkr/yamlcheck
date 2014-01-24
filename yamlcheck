@@ -1,0 +1,71 @@
+#!/usr/bin/env python2
+
+"""
+usage: yamlcheck [-h] [-V] [-q] PATHS [PATHS ...]
+
+Check if files adhere to YAML syntax.
+
+positional arguments:
+  PATHS
+
+optional arguments:
+  -h, --help     show this help message and exit
+  -V, --version  show program's version number and exit
+  -q, --quiet
+"""
+
+__version__ = '0.1.0'
+
+
+import argparse
+import yaml
+import sys
+
+
+def main():
+    par = argparse.ArgumentParser(prog='yamlcheck',
+        description='Check if files adhere to YAML syntax.')
+    par.add_argument('-V', '--version', action='version', version=__version__)
+    par.add_argument('-q', '--quiet', action='store_true')
+    par.add_argument('files', metavar='PATHS', type=argparse.FileType('r'), nargs='+')
+    args = par.parse_args()
+
+    errors = 0
+    for file in args.files:
+        try:
+            yaml.load(file)
+        except yaml.YAMLError as e:
+            if not args.quiet:
+                if errors:
+                    print>>sys.stderr
+                print>>sys.stderr, describe(file.name, e)
+                errors += 1
+
+    if errors:
+        sys.exit(1)
+
+
+def describe(file_name, yaml_error):
+    result = []
+
+    if hasattr(yaml_error, 'problem_mark'):
+        mark = yaml_error.problem_mark
+        result.append('Error at: %s:%s column %s' % (file_name, mark.line+1, mark.column+1))
+    else:
+        result.append('Error in: %s' % file_name)
+
+    if hasattr(yaml_error, 'context'):
+        if hasattr(yaml_error, 'context_mark'):
+            result.append('  Context: %s' % yaml_error.context)
+        else:
+            result.append('  Context: %s' % yaml_error.context)
+
+    if hasattr(yaml_error, 'problem'):
+        result.append('  Problem: %s' % yaml_error.problem)
+
+    return '\n'.join(result)
+
+
+if __name__ == '__main__':
+    main()
+
