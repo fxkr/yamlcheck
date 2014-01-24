@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='yamlcheck',
-    version='0.1.1',
+    version='0.1.2',
     description='Check if files adhere to YAML syntax',
     author='Felix Kaiser',
     author_email='felix.kaiser@fxkr.net',
