@@ -39,7 +39,7 @@ def main():
                 if errors:
                     print>>sys.stderr
                 print>>sys.stderr, describe(file.name, e)
-                errors += 1
+            errors += 1
 
     if errors:
         sys.exit(1)
