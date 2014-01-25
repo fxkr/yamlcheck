@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 
 """
-usage: yamlcheck [-h] [-V] [-q] PATHS [PATHS ...]
+usage: yamlcheck [-h] [-V] [-p] [-q] PATHS [PATHS ...]
 
 Check if files adhere to YAML syntax.
 
@@ -11,6 +11,7 @@ positional arguments:
 optional arguments:
   -h, --help     show this help message and exit
   -V, --version  show program's version number and exit
+  -p, --pretty   show pretty printed documents
   -q, --quiet    do not show errors
 """
 
@@ -18,6 +19,7 @@ __version__ = '0.1.2'
 
 
 import argparse
+import pprint
 import sys
 import yaml
 
@@ -26,6 +28,8 @@ def main():
     par = argparse.ArgumentParser(prog='yamlcheck',
         description='Check if files adhere to YAML syntax.')
     par.add_argument('-V', '--version', action='version', version=__version__)
+    par.add_argument('-p', '--pretty', action='store_true',
+        help='show pretty printed documents')
     par.add_argument('-q', '--quiet', action='store_true',
         help='do not show errors')
     par.add_argument('files', metavar='PATHS', type=argparse.FileType('r'), nargs='+')
@@ -34,7 +38,9 @@ def main():
     errors = 0
     for file in args.files:
         try:
-            yaml.load(file)
+            obj = yaml.load(file)
+            if args.pretty:
+                pprint.pprint(obj)
         except yaml.YAMLError as e:
             if not args.quiet:
                 if errors:
