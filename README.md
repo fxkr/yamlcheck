@@ -18,7 +18,8 @@ positional arguments:
 optional arguments:
   -h, --help     show this help message and exit
   -V, --version  show program's version number and exit
-  -q, --quiet
+  -p, --pretty   show pretty printed documents
+  -q, --quiet    do not show errors
 ```
 
 
