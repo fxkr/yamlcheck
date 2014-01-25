@@ -4,7 +4,7 @@ Check if files adhere to <a href="http://www.yaml.org/">YAML</a> syntax.
 
 Quite simple and mostly useless.
 
-* Version: 0.1.2
+* Version: 0.1.3
 * Author: Felix Kaiser <felix.kaiser@fxkr.net>
 * License: revised BSD (see LICENSE)
 
